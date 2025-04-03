@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users_B")
 public class User implements UserDetails {
 
     @Id
@@ -19,22 +19,26 @@ public class User implements UserDetails {
     private String username;
     @Column(name = "password")
     private String password;
-    @Column(name = "email")
-    private String email;
-    @Column(name = "enabled")
-    private int enabled;
+    @Column(name = "firstName")
+    private String firstName;
+    @Column(name = "lastName")
+    private String lastName;
+    @Column(name = "age")
+    private int age;
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
     public User() {
     }
 
-    public User(long id, String username, String password, String email, int enabled) {
+    public User(long id, String username, String password, String firstName, String lastName, int age, Set<Role> roles) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.email = email;
-        this.enabled = enabled;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.roles = roles;
     }
 
     public long getId() {
@@ -63,20 +67,28 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public int getEnabled() {
-        return enabled;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setEnabled(int enabled) {
-        this.enabled = enabled;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public Set<Role> getRoles() {

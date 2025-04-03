@@ -16,8 +16,10 @@
 <table style="border-collapse: separate; border-spacing: 30px;">
     <tr>
         <th>Roles</th>
-        <th>E-mail</th>
-        <th>Account status</th>
+        <th>Username</th>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Age</th>
     </tr>
     <tr>
         <td>
@@ -27,10 +29,10 @@
                 </span>
             </div>
         </td>
-        <td th:text="${user.email}"></td>
-
-        <td style="text-align: center;" th:if="${user.getEnabled() == 1}" th:text="Active"></td>
-        <td style="text-align: center;" th:if="${user.getEnabled() == 0}" th:text="Blocked"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.firstName}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.age}"></td>
     </tr>
 </table>
 

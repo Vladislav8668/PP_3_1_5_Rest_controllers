@@ -10,17 +10,18 @@
 <h2>User management</h2>
 <br>
 
-<table>
+<table style="border-collapse: separate; border-spacing: 30px;">
     <tr>
-        <th>Username</th>
-        <th>E-mail</th>
+        <th>Id</th>
         <th>Roles</th>
-        <th>Operations</th>
+        <th>Username</th>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Age</th>
     </tr>
     <tr th:each="user : ${users}">
 
-        <td th:text="${user.username}"></td>
-        <td th:text="${user.email}"></td>
+        <td th:text="${user.id}"></td>
         <td>
             <div th:each="role : ${user.getRoles()}">
                 <span th:text="${role.getName()}">
@@ -28,6 +29,10 @@
                 </span>
             </div>
         </td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.firstName}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.age}"></td>
         <td>
             <div style="display: flex; justify-content: space-between;">
                 <!-- Кнопка обновления -->
