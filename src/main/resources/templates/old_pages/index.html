@@ -19,7 +19,7 @@
 <!--<span sec:authentication="principal.authorities">Roles</span>-->
 
 <div sec:authorize="isAuthenticated()">
-    <form th:action="@{logout}">
+    <form th:action="@{logout}" method="post">
         <input type="submit" value="Exit"/>
     </form>
 </div>

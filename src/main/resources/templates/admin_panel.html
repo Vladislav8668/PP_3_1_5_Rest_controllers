@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"
+      xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <title>Admin panel</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+
+<!--Полоса-заголовок-->
+    <div class="container-fluid" style="background-color: #353535">
+        <div class="row d-flex justify-content-between align-items-center py-2">
+
+            <div class="col-auto">
+                <span class="text-white" style="font-weight: bold; font-size: 25px;" th:text="${#authentication.name}"></span>
+                <span class="text-white" style="font-size: 25px;" th:text="' with roles: '"></span>
+                <span class="text-white" th:each="role : ${#authentication.getAuthorities()}">
+                    <span style="font-size: 25px;" th:text="${#strings.substring(role.getAuthority(), 5)} + ' '"></span>
+                </span>
+            </div>
+
+            <div class="col-auto">
+                <form action="/logout" method="post" style="display: inline;">
+                    <button type="submit" style="background: none; border: none; color: #8f8f8f; font-size: 1.5rem; line-height: 1.2; cursor: pointer;">Logout</button>
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                </form>
+            </div>
+
+        </div>
+    </div>
+<!--Основная часть-->
+    <div class="container-fluid py-4">
+        <div class="row">
+<!--        Навигационная панель сбоку-->
+            <div class="col-12 col-sm-12 col-md-3 col-lg-2 col-xl-2" style="background-color: #f4f4f4; height: 100vh;">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link active" id="v-pills-admin-tab" data-toggle="pill" href="#v-pills-admin" role="tab" aria-controls="v-pills-admin" aria-selected="true">Admin</a>
+                    <a class="nav-link" id="v-pills-user-tab" data-toggle="pill" href="#v-pills-user" role="tab" aria-controls="v-pills-user" aria-selected="false">User</a>
+                </div>
+            </div>
+<!--        Вкладки навигационной панели-->
+            <div class="col-12 col-sm-12 col-md-9 col-lg-10 col-xl-10">
+                <div class="tab-content" id="v-pills-tabContent">
+<!--                Admin вкладка-->
+                    <div class="tab-pane fade show active" id="v-pills-admin" role="tabpanel" aria-labelledby="v-pills-admin-tab">
+
+                        <h1 style="margin-top: 20px; margin-bottom: 30px;">Admin panel</h1>
+<!--                    Navbar-->
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="admin-tab" data-toggle="tab" href="#admin" role="tab" aria-controls="admin" aria-selected="true">Users table</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="user-tab" data-toggle="tab" href="#user" role="tab" aria-controls="user" aria-selected="false">New user</a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="myTabContent">
+<!--                        1 вкладка - таблица с пользователями    -->
+                            <div class="tab-pane fade show active" id="admin" role="tabpanel" aria-labelledby="admin-tab">
+
+                                <div class="py-3" style="background-color: #f4f4f4; border: 1px solid #ddd;">
+                                    <h4 class="text-left" style="margin-left: 10px;">All users</h4>
+                                </div>
+
+                                <div class="table-responsive" style="padding: 20px; border: 1px solid #ddd;">
+                                    <table class="table table-striped" style="background-color: #ffffff">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Age</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                            <th>Edit</th>
+                                            <th>Delete</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>30</td>
+                                            <td>mail@gmail.com</td>
+                                            <td>USER</td>
+                                            <td>
+                                                <button class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter1">Edit</button>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter2">Delete</button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+<!--                                Модальное для обновления-->
+                                    <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle1">Edit user</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body" style="display: flex; justify-content: center;">
+                                                    <form style="padding: 20px; width: 75%;">
+                                                            <div class="form-group">
+                                                                <label for="exampleInputIdEdit" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Id</label>
+                                                                <input type="password" class="form-control" id="exampleInputIdEdit" placeholder="Id" readonly>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="exampleInputFirstEdit" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">First name</label>
+                                                                <input type="password" class="form-control" id="exampleInputFirstEdit" placeholder="First name">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="exampleInputLastEdit" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Last name</label>
+                                                                <input type="password" class="form-control" id="exampleInputLastEdit" placeholder="Last name">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="exampleInputAgeEdit" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Age</label>
+                                                                <input type="password" class="form-control" id="exampleInputAgeEdit" placeholder="Age">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="exampleInputEmailEdit" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Email</label>
+                                                                <input type="email" class="form-control" id="exampleInputEmailEdit" aria-describedby="emailHelp" placeholder="Email">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="exampleInputPasswordEdit" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Password</label>
+                                                                <input type="password" class="form-control" id="exampleInputPasswordEdit" placeholder="Password">
+                                                            </div>
+                                                            <label for="rolesEdit" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Role</label>
+                                                            <select class="custom-select" multiple id="rolesEdit">
+                                                                <option value="0">Zero</option>
+                                                                <option value="1">One</option>
+                                                                <option value="2">Two</option>
+                                                                <option value="3">Three</option>
+                                                            </select>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary" onclick="window.location.href='/edit'">Edit</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+<!--                                Модальное для удаления-->
+                                    <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle2">Delete user</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body" style="display: flex; justify-content: center;">
+                                                    <form style="padding: 20px; width: 75%;">
+                                                        <fieldset disabled>
+                                                            <div class="form-group">
+                                                                <label for="exampleInputIdDel" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Id</label>
+                                                                <input type="password" class="form-control" id="exampleInputIdDel" placeholder="Id">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="exampleInputFirstDel" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">First name</label>
+                                                                <input type="password" class="form-control" id="exampleInputFirstDel" placeholder="First name">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="exampleInputLastDel" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Last name</label>
+                                                                <input type="password" class="form-control" id="exampleInputLastDel" placeholder="Last name">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="exampleInputAgeDel" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Age</label>
+                                                                <input type="password" class="form-control" id="exampleInputAgeDel" placeholder="Age">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="exampleInputEmailDel" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Email</label>
+                                                                <input type="email" class="form-control" id="exampleInputEmailDel" aria-describedby="emailHelp" placeholder="Email">
+                                                            </div>
+                                                            <label for="rolesDel" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Role</label>
+                                                            <select class="custom-select" multiple id="rolesDel">
+                                                                <option value="0">Zero</option>
+                                                                <option value="1">One</option>
+                                                                <option value="2">Two</option>
+                                                                <option value="3">Three</option>
+                                                            </select>
+                                                        </fieldset>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-danger" onclick="window.location.href='/delete'">Delete</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+<!--                        2 вкладка - добавить нового пользователя    -->
+                            <div class="tab-pane fade" id="user" role="tabpanel" aria-labelledby="user-tab" style="border: 1px solid #ddd;">
+                                <div class="py-3" style="background-color: #f4f4f4; border: 1px solid #ddd;">
+                                    <h4 class="text-left" style="margin-left: 10px;">Add new user</h4>
+                                </div>
+
+                                <div class="container" style="display: flex; justify-content: center; align-items: center;">
+                                    <form style="padding: 20px; width: 50%;">
+                                        <div class="form-group">
+                                            <label for="exampleInputFirst" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">First name</label>
+                                            <input type="password" class="form-control" id="exampleInputFirst" placeholder="First name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputLast" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Last name</label>
+                                            <input type="password" class="form-control" id="exampleInputLast" placeholder="Last name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputAge" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Age</label>
+                                            <input type="password" class="form-control" id="exampleInputAge" placeholder="Age">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Email</label>
+                                            <input type="email" class="form-control" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Email">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Password</label>
+                                            <input type="password" class="form-control" id="exampleInputPassword" placeholder="Password">
+                                        </div>
+                                        <label for="roles" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Role</label>
+                                        <select class="custom-select" multiple id="roles">
+                                            <option value="0">Zero</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                        <br>
+                                        <br>
+                                        <div style="display: flex; justify-content: center;">
+                                            <button type="submit" class="btn btn-success">Add new user</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+<!--                User вкладка    -->
+                    <div class="tab-pane fade" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-user-tab">
+
+                        <h1 style="margin-top: 20px; margin-bottom: 30px;">User information-page</h1>
+
+                        <div style="border: 1px solid #ddd;">
+                            <div class="py-3" style="background-color: #f4f4f4; border: 1px solid #ddd;">
+                                <h4 class="text-left" style="margin-left: 10px;">About user</h4>
+                            </div>
+                            <div class="table-responsive" style="padding: 20px;">
+                                <table class="table table-striped" style="background-color: #ffffff">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Age</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td th:text="${user.id}"></td>
+                                        <td th:text="${user.firstName}"></td>
+                                        <td th:text="${user.lastName}"></td>
+                                        <td th:text="${user.age}"></td>
+                                        <td th:text="${user.username}"></td>
+                                        <td>
+                                            <span th:each="role : ${user.getRoles()}">
+                                                <span th:text="${#strings.substring(role.getName(), 5)} + ' '"></span>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

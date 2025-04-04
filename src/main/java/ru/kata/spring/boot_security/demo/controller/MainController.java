@@ -3,11 +3,9 @@ package ru.kata.spring.boot_security.demo.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 public class MainController {
@@ -18,22 +16,21 @@ public class MainController {
         this.userService = userService;
     }
 
-    @GetMapping("/")
-    public String showHomePage() {
-        return "index";
+    @GetMapping("/login")
+    public String login() {
+        return "login";
     }
 
     @GetMapping("/user")
     public String showUserPage(Principal principal, Model model) {
-        User user = userService.findByUsername(principal.getName());
-        model.addAttribute("user", user);
-        return "user";
+        model.addAttribute("user", userService.findByUsername(principal.getName()));
+        return "user_page";
     }
 
     @GetMapping("/admin")
-    public String showAllUsers(Model model) {
-        List<User> users = userService.getAllUsers();
-        model.addAttribute("users", users);
-        return "all_users";
+    public String showAllUsers(Principal principal, Model model) {
+        model.addAttribute("user", userService.findByUsername(principal.getName()));
+        model.addAttribute("users", userService.getAllUsers());
+        return "admin_panel";
     }
 }
