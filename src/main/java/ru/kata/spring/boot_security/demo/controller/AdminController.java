@@ -22,14 +22,14 @@ public class AdminController {
         this.roleRepository = roleRepository;
     }
 
-    @GetMapping("/addNewUser")
-    public String addNewUser(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        List<Role> roles = roleRepository.findAll();
-        model.addAttribute("roles", roles);
-        return "user_info";
-    }
+//    @GetMapping("/addNewUser")
+//    public String addNewUser(Model model) {
+//        User user = new User();
+//        model.addAttribute("user", user);
+//        List<Role> roles = roleRepository.findAll();
+//        model.addAttribute("roles", roles);
+//        return "user_info";
+//    }
 
     @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute("user") User user) {

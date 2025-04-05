@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en"
-      xmlns:th="https://www.thymeleaf.org">
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
     <title>User page</title>
@@ -40,6 +41,9 @@
 <!--        Навигационная панель сбоку-->
             <div class="col-12 col-sm-12 col-md-3 col-lg-2 col-xl-2" style="background-color: #f4f4f4; height: 100vh;">
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                        <a class="nav-link" id="v-pills-admin-tab" th:href="@{admin}" role="tab" aria-controls="v-pills-admin" aria-selected="true">Admin</a>
+                    </div>
                     <a class="nav-link active" id="v-pills-user-tab" data-toggle="pill" href="#v-pills-user" role="tab" aria-controls="v-pills-user" aria-selected="true">User</a>
                 </div>
             </div>
