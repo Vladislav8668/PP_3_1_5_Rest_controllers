@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.dao.UserRepository;
+import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
 
 import java.util.*;
@@ -57,7 +58,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        String newPassword = user.getPassword();
+        if (newPassword != null && !newPassword.isEmpty()) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        } else {
+            user.setPassword(userRepository.getById(user.getId()).getPassword());
+        }
+        Set<Role> roles = user.getRoles();
+        if (roles == null || roles.isEmpty()) {
+            user.setRoles(userRepository.getById(user.getId()).getRoles());
+        }
         userRepository.save(user);
     }
 

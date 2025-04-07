@@ -12,7 +12,6 @@
 </head>
 
 <body>
-
 <!--Полоса-заголовок-->
     <div class="container-fluid" style="background-color: #353535">
         <div class="row d-flex justify-content-between align-items-center py-2">
@@ -84,131 +83,130 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="user : ${users}">
-                                            <td th:text="${user.id}"></td>
-                                            <td th:text="${user.firstName}"></td>
-                                            <td th:text="${user.lastName}"></td>
-                                            <td th:text="${user.age}"></td>
-                                            <td th:text="${user.username}"></td>
+                                        <tr th:each="user_db : ${users}">
+                                            <td th:text="${user_db.id}"></td>
+                                            <td th:text="${user_db.firstName}"></td>
+                                            <td th:text="${user_db.lastName}"></td>
+                                            <td th:text="${user_db.age}"></td>
+                                            <td th:text="${user_db.username}"></td>
                                             <td>
-                                            <span th:each="role : ${user.getRoles()}">
+                                            <span th:each="role : ${user_db.getRoles()}">
                                                 <span th:text="${#strings.substring(role.getName(), 5)} + ' '"></span>
                                             </span>
                                             </td>
                                             <td>
-                                                <button class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter1">Edit</button>
+<!--                                                Кнопка изменения-->
+                                                <button class="btn btn-info" data-toggle="modal" th:data-target="'#modalWindowEdit' + ${user_db.id}">Edit</button>
+<!--                                                Модальное для изменения-->
+                                                <div class="modal fade" th:id="'modalWindowEdit' + ${user_db.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLongTitle1">Edit user</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <form style="padding: 20px;" th:action="@{admin/editUser}" th:method="POST" th:object="${userEdited}">
+                                                                <div class="modal-body" style="display: flex; justify-content: center;">
+                                                                    <fieldset>
+                                                                    <div class="form-group">
+                                                                        <label for="id" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Id</label>
+                                                                        <input type="text" th:value="${user_db.id}" id="id" name="id" class="form-control" placeholder="Id" readonly>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="firstName" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">First name</label>
+                                                                        <input type="text" th:value="${user_db.firstName}" id="firstName" name="firstName" class="form-control" placeholder="First name">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="lastName" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Last name</label>
+                                                                        <input type="text" th:value="${user_db.lastName}" class="form-control" id="lastName" name="lastName" placeholder="Last name">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="age" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Age</label>
+                                                                        <input type="number" th:value="${user_db.age}" class="form-control" id="age" name="age" placeholder="Age">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="username" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Email</label>
+                                                                        <input type="email" th:value="${user_db.username}" class="form-control" id="username" name="username" aria-describedby="emailHelp" placeholder="Email">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="password" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Password</label>
+                                                                        <input type="password" class="form-control" id="password" name="password" aria-describedby="emailHelp" placeholder="Password">
+                                                                    </div>
+                                                                    <label for="rolesEdit" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Role</label>
+                                                                        <select class="custom-select" multiple id="rolesEdit" th:field="*{roles}" >
+                                                                            <option th:each="role : ${roles}" th:value="${role.getId()}" th:text="${#strings.substring(role.getName(), 5)}"></option>
+                                                                        </select>
+                                                                    </fieldset>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-primary">Edit</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                             <td>
-                                                <button class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter2">Delete</button>
+<!--                                                Кнопка удаления-->
+                                                <button class="btn btn-danger" data-toggle="modal" th:data-target="'#modalWindowDelete' + ${user_db.id}">Delete</button>
+<!--                                                Модальное для удаления-->
+                                                <div class="modal fade" th:id="'modalWindowDelete' + ${user_db.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLongTitle2">Delete user</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <form style="padding: 20px;" th:action="@{admin/deleteUser(userId=${user_db.id})}" th:method="post">
+                                                                <div class="modal-body" style="display: flex; justify-content: center;">
+                                                                    <fieldset disabled>
+                                                                        <div class="form-group">
+                                                                            <label for="exampleInputIdDel" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Id</label>
+                                                                            <input type="text" th:value="${user_db.id}" class="form-control" id="exampleInputIdDel" placeholder="Id">
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="exampleInputFirstDel" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">First name</label>
+                                                                            <input type="text" th:value="${user_db.firstName}" class="form-control" id="exampleInputFirstDel" placeholder="First name">
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="exampleInputLastDel" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Last name</label>
+                                                                            <input type="text" th:value="${user_db.lastName}" class="form-control" id="exampleInputLastDel" placeholder="Last name">
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="exampleInputAgeDel" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Age</label>
+                                                                            <input type="text" th:value="${user_db.age}" class="form-control" id="exampleInputAgeDel" placeholder="Age">
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="exampleInputEmailDel" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Email</label>
+                                                                            <input type="text" th:value="${user_db.username}" class="form-control" id="exampleInputEmailDel" aria-describedby="emailHelp" placeholder="Email">
+                                                                        </div>
+                                                                        <label for="rolesDel" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Role</label>
+                                                                        <select class="custom-select" multiple id="rolesDel">
+                                                                            <option th:each="role : ${user_db.roles}" th:text="${#strings.substring(role.getName(), 5)}"></option>
+                                                                        </select>
+                                                                    </fieldset>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                         </tbody>
                                     </table>
-<!--                                Модальное для обновления-->
-                                    <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLongTitle1">Edit user</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body" style="display: flex; justify-content: center;">
-                                                    <form style="padding: 20px; width: 75%;">
-                                                            <div class="form-group">
-                                                                <label for="exampleInputIdEdit" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Id</label>
-                                                                <input type="password" class="form-control" id="exampleInputIdEdit" placeholder="Id" readonly>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInputFirstEdit" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">First name</label>
-                                                                <input type="password" class="form-control" id="exampleInputFirstEdit" placeholder="First name">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInputLastEdit" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Last name</label>
-                                                                <input type="password" class="form-control" id="exampleInputLastEdit" placeholder="Last name">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInputAgeEdit" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Age</label>
-                                                                <input type="password" class="form-control" id="exampleInputAgeEdit" placeholder="Age">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInputEmailEdit" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Email</label>
-                                                                <input type="email" class="form-control" id="exampleInputEmailEdit" aria-describedby="emailHelp" placeholder="Email">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInputPasswordEdit" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Password</label>
-                                                                <input type="password" class="form-control" id="exampleInputPasswordEdit" placeholder="Password">
-                                                            </div>
-                                                            <label for="rolesEdit" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Role</label>
-                                                            <select class="custom-select" multiple id="rolesEdit">
-                                                                <option value="0">Zero</option>
-                                                                <option value="1">One</option>
-                                                                <option value="2">Two</option>
-                                                                <option value="3">Three</option>
-                                                            </select>
-                                                    </form>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-primary" onclick="window.location.href='/edit'">Edit</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-<!--                                Модальное для удаления-->
-                                    <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLongTitle2">Delete user</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body" style="display: flex; justify-content: center;">
-                                                    <form style="padding: 20px; width: 75%;">
-                                                        <fieldset disabled>
-                                                            <div class="form-group">
-                                                                <label for="exampleInputIdDel" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Id</label>
-                                                                <input type="password" class="form-control" id="exampleInputIdDel" placeholder="Id">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInputFirstDel" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">First name</label>
-                                                                <input type="password" class="form-control" id="exampleInputFirstDel" placeholder="First name">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInputLastDel" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Last name</label>
-                                                                <input type="password" class="form-control" id="exampleInputLastDel" placeholder="Last name">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInputAgeDel" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Age</label>
-                                                                <input type="password" class="form-control" id="exampleInputAgeDel" placeholder="Age">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleInputEmailDel" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Email</label>
-                                                                <input type="email" class="form-control" id="exampleInputEmailDel" aria-describedby="emailHelp" placeholder="Email">
-                                                            </div>
-                                                            <label for="rolesDel" style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Role</label>
-                                                            <select class="custom-select" multiple id="rolesDel">
-                                                                <option value="0">Zero</option>
-                                                                <option value="1">One</option>
-                                                                <option value="2">Two</option>
-                                                                <option value="3">Three</option>
-                                                            </select>
-                                                        </fieldset>
-                                                    </form>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-danger" onclick="window.location.href='/delete'">Delete</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
 
                             </div>
+
 <!--                        2 вкладка - добавить нового пользователя    -->
                             <div class="tab-pane fade" id="addNewUser" role="tabpanel" aria-labelledby="user-tab" style="border: 1px solid #ddd;">
                                 <div class="py-3" style="background-color: #f4f4f4; border: 1px solid #ddd;">
@@ -249,11 +247,12 @@
                                     </form>
                                 </div>
                             </div>
-
                         </div>
+
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
