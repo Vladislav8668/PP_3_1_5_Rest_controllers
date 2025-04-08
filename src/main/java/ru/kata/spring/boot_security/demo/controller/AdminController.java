@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
-@Controller
+@RestController
 @RequestMapping("/admin")
 public class AdminController {
 

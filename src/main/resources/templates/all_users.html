@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <title>User management</title>
+</head>
+
+<body>
+
+<h2>User management</h2>
+<br>
+
+<table>
+    <tr>
+        <th>Username</th>
+        <th>E-mail</th>
+        <th>Roles</th>
+        <th>Operations</th>
+    </tr>
+    <tr th:each="user : ${users}">
+
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.email}"></td>
+        <td>
+            <div th:each="role : ${user.getRoles()}">
+                <span th:text="${role.getName()}">
+                    <br>
+                </span>
+            </div>
+        </td>
+        <td>
+            <div style="display: flex; justify-content: space-between;">
+                <!-- Кнопка обновления -->
+                <form th:action="@{admin/updateInfo(userId=${user.id})}" th:method="POST">
+                    <input type="submit" value="Update"/>
+                </form>
+                <!-- Кнопка удаления -->
+                <form th:action="@{admin/deleteUser(userId=${user.id})}" th:method="POST">
+                    <input type="submit" value="Delete"/>
+                </form>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<br>
+<input type="button" value="Add new user" onclick="window.location.href = 'admin/addNewUser'"/>
+<br>
+<br>
+
+<form th:action="@{logout}">
+    <input type="submit" value="Exit"/>
+</form>
+
+</body>
+
+</html>

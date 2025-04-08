@@ -10,10 +10,10 @@
 		<relativePath/>
 	</parent>
 	<groupId>com.springboot</groupId>
-	<artifactId>spring-boot_security-bootstrap</artifactId>
+	<artifactId>spring-boot_security-bootstrap-REST</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring-boot_security-bootstrap</name>
-	<description>spring-boot_security-bootstrap</description>
+	<name>spring-boot_security-bootstrap-REST</name>
+	<description>spring-boot_security-bootstrap-REST</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
