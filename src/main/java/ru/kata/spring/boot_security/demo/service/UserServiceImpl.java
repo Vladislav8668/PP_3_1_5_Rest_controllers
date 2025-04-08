@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(long id) {
-        if (userRepository.findById(id).isPresent()) {
+        if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
         }
     }
@@ -58,12 +58,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user) {
+        //Проверка был ли изменен пароль при редактировании
         String newPassword = user.getPassword();
         if (newPassword != null && !newPassword.isEmpty()) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         } else {
             user.setPassword(userRepository.getById(user.getId()).getPassword());
         }
+        //Проверка были ли изменены роли при редактировании
         Set<Role> roles = user.getRoles();
         if (roles == null || roles.isEmpty()) {
             user.setRoles(userRepository.getById(user.getId()).getRoles());

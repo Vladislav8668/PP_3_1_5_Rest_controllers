@@ -3,8 +3,8 @@ package ru.kata.spring.boot_security.demo.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import ru.kata.spring.boot_security.demo.dao.RoleRepository;
 import ru.kata.spring.boot_security.demo.entity.User;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.security.Principal;
@@ -13,11 +13,11 @@ import java.security.Principal;
 public class MainController {
 
     private final UserService userService;
-    private final RoleRepository roleRepository;
+    private final RoleService roleService;
 
-    public MainController(UserService userService, RoleRepository roleRepository) {
+    public MainController(UserService userService, RoleService roleService) {
         this.userService = userService;
-        this.roleRepository = roleRepository;
+        this.roleService = roleService;
     }
 
     @GetMapping("/user")
@@ -31,7 +31,8 @@ public class MainController {
         model.addAttribute("user", new User());
         model.addAttribute("userEdited", new User());
         model.addAttribute("users", userService.getAllUsers());
-        model.addAttribute("roles", roleRepository.findAll());
+        model.addAttribute("roles", roleService.getAllRoles());
         return "admin_panel";
     }
+
 }
