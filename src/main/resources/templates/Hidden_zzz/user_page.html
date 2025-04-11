@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <title>User page</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+
+<!--Полоса-заголовок-->
+    <div class="container-fluid" style="background-color: #353535">
+        <div class="row d-flex justify-content-between align-items-center py-2">
+
+            <div class="col-auto">
+                <span class="text-white" style="font-weight: bold; font-size: 25px;" th:text="${#authentication.name}"></span>
+                <span class="text-white" style="font-size: 25px;" th:text="' with roles: '"></span>
+                <span class="text-white" th:each="role : ${#authentication.getAuthorities()}">
+                    <span style="font-size: 25px;" th:text="${#strings.substring(role.getAuthority(), 5)} + ' '"></span>
+                </span>
+            </div>
+
+            <div class="col-auto">
+                <form action="/logout" method="post" style="display: inline;">
+                    <button type="submit" style="background: none; border: none; color: #8f8f8f; font-size: 1.5rem; line-height: 1.2; cursor: pointer;">Logout</button>
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                </form>
+            </div>
+
+        </div>
+    </div>
+<!--Основная часть-->
+    <div class="container-fluid py-4">
+        <div class="row">
+<!--        Навигационная панель сбоку-->
+            <div class="col-12 col-sm-12 col-md-3 col-lg-2 col-xl-2" style="background-color: #f4f4f4; height: 100vh;">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                        <a class="nav-link" id="v-pills-admin-tab" th:href="@{admin}" role="tab" aria-controls="v-pills-admin" aria-selected="true">Admin</a>
+                    </div>
+                    <a class="nav-link active" id="v-pills-user-tab" data-toggle="pill" href="#v-pills-user" role="tab" aria-controls="v-pills-user" aria-selected="true">User</a>
+                </div>
+            </div>
+<!--        Вкладки навигационной панели-->
+            <div class="col-12 col-sm-12 col-md-9 col-lg-10 col-xl-10">
+                <div class="tab-content" id="v-pills-tabContent">
+<!--                User вкладка    -->
+                    <div class="tab-pane fade show active" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-user-tab">
+
+                        <h1 style="margin-top: 20px; margin-bottom: 30px;">User information-page</h1>
+
+                        <div style="border: 1px solid #ddd;">
+                            <div class="py-3" style="background-color: #f4f4f4; border: 1px solid #ddd;">
+                                <h4 class="text-left" style="margin-left: 10px;">About user</h4>
+                            </div>
+                            <div class="table-responsive" style="padding: 20px;">
+                                <table class="table table-striped" style="background-color: #ffffff">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Age</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td th:text="${user.id}"></td>
+                                        <td th:text="${user.firstName}"></td>
+                                        <td th:text="${user.lastName}"></td>
+                                        <td th:text="${user.age}"></td>
+                                        <td th:text="${user.username}"></td>
+                                        <td>
+                                            <span th:each="role : ${user.getRoles()}">
+                                                <span th:text="${#strings.substring(role.getName(), 5)} + ' '"></span>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

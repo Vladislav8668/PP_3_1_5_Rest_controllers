@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,7 +10,7 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.security.Principal;
 
-@RestController
+@Controller
 public class MainController {
 
     private final UserService userService;
@@ -33,6 +34,11 @@ public class MainController {
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("roles", roleService.getAllRoles());
         return "admin_panel";
+    }
+
+    @GetMapping("/test")
+    public String test() {
+        return "test";
     }
 
 }
