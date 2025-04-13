@@ -1,5 +1,7 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
@@ -7,7 +9,7 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/api")
 public class AdminController {
 
     private final UserService userService;
@@ -16,70 +18,44 @@ public class AdminController {
         this.userService = userService;
     }
 
-//    ------------Из 3_1_4----------------
-//    @PostMapping("/saveUser")
-//    public String saveUser(@ModelAttribute("user") User user) {
-//        User existingUser = userService.findByUsername(user.getUsername());
-//        if (existingUser != null) {
-//            return "redirect:/admin";
-//        }
-//        userService.saveUser(user);
-//        return "redirect:/admin";
-//    }
-//
-//    @PostMapping("/editUser")
-//    public String editUser(@ModelAttribute("userEdited") User user) {
-//        userService.updateUser(user);
-//        return "redirect:/admin";
-//    }
-//
-//    @PostMapping("/deleteUser")
-//    public String deleteUser(@RequestParam("userId") int id) {
-//        userService.deleteUser(id);
-//        return "redirect:/admin";
-//    }
-
-
-
-//    -----------Из заурчика-----------
     @GetMapping("/users")
-    public List<User> showAllUsers() {
+    public ResponseEntity<List<User>> showAllUsers() {
         List<User> allUsers = userService.getAllUsers();
-        return allUsers;
+        return new ResponseEntity<>(allUsers, HttpStatus.OK);
     }
 
     @GetMapping("/users/{id}")
-    public User getUser(@PathVariable int id) {
+    public ResponseEntity<User> getUser(@PathVariable long id) {
         User user = userService.getUser(id);
-        return user;
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PostMapping("/users")
-    public User addNewUser(@RequestBody User user) {
-        // Проверка на уже существующего
+    public ResponseEntity<String> addNewUser(@RequestBody User user) {
+        // Проверка на уже существующего пользователя
         User existingUser = userService.findByUsername(user.getUsername());
         if (existingUser != null) {
-            return null;
+            return new ResponseEntity<>("User with this username is already exists", HttpStatus.NOT_ACCEPTABLE);
         }
         userService.saveUser(user);
-        return user;
+        return new ResponseEntity<>("User was added", HttpStatus.OK);
     }
 
-    @PutMapping("/users")
-    public User updateUser(@RequestBody User user) {
+    @PutMapping("/users/{id}")
+    public ResponseEntity<String> updateUser(@PathVariable long id, @RequestBody User user) {
         // Проверка на существование такого
-        User existingUser = userService.getUser(user.getId());
+        User existingUser = userService.getUser(id);
         if (existingUser == null) {
-            return null;
+            return new ResponseEntity<>("This user does not exist", HttpStatus.NOT_FOUND);
         }
         userService.updateUser(user);
-        return user;
+        return new ResponseEntity<>("User with ID = " + id + " was updated", HttpStatus.OK);
     }
 
     @DeleteMapping("/users/{id}")
-    public String deleteUser(@PathVariable int id) {
+    public ResponseEntity<String> deleteUser(@PathVariable long id) {
         userService.deleteUser(id);
-        return "User with ID = " + id + " was deleted";
+        return new ResponseEntity<>("User with ID = " + id + " was deleted", HttpStatus.OK);
     }
 
 }
