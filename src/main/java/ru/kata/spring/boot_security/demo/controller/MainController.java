@@ -30,7 +30,6 @@ public class MainController {
     public String showAllUsers(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("userEdited", new User());
-        model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("roles", roleService.getAllRoles());
         return "admin_panel";
     }

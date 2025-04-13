@@ -31,7 +31,7 @@
                         style="background: none; border: none; color: #8f8f8f; font-size: 1.5rem; line-height: 1.2; cursor: pointer;">
                     Logout
                 </button>
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+<!--                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
             </form>
         </div>
 
@@ -69,6 +69,7 @@
                         </li>
                     </ul>
 
+                    <!--Содержимое рабочей области                    -->
                     <div class="tab-content" id="myTabContent">
                         <!--1 вкладка - таблица с пользователями    -->
                         <div class="tab-pane fade show active" id="admin" role="tabpanel" aria-labelledby="admin-tab">
@@ -107,50 +108,47 @@
                             </div>
 
                             <div class="container" style="display: flex; justify-content: center; align-items: center;">
-                                <form style="padding: 20px; width: 50%;" th:action="@{admin/saveUser}"
-                                      th:object="${user}" th:method="post">
+                                <form id="userForm" style="padding: 20px; width: 50%;">
                                     <div class="form-group">
                                         <label for="exampleInputFirst"
-                                               style="display: flex; justify-content: center; align-items: center; font-weight: bold;">First
-                                            name</label>
-                                        <input type="text" class="form-control" th:field="*{firstName}"
-                                               id="exampleInputFirst" placeholder="First name">
+                                               style="display: flex; justify-content: center; align-items: center; font-weight: bold;">First name</label>
+                                        <input type="text" class="form-control" name="firstName"
+                                               id="exampleInputFirst" placeholder="First name" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputLast"
-                                               style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Last
-                                            name</label>
-                                        <input type="text" class="form-control" th:field="*{lastName}"
-                                               id="exampleInputLast" placeholder="Last name">
+                                               style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Last name</label>
+                                        <input type="text" class="form-control" name="lastName"
+                                               id="exampleInputLast" placeholder="Last name" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputAge"
                                                style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Age</label>
-                                        <input type="number" class="form-control" th:field="*{age}" id="exampleInputAge"
-                                               placeholder="Age">
+                                        <input type="number" class="form-control" name="age" id="exampleInputAge"
+                                               placeholder="Age" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputEmail"
                                                style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Email</label>
-                                        <input type="email" class="form-control" th:field="*{username}"
-                                               id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Email">
+                                        <input type="email" class="form-control" name="username"
+                                               id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Email" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputPassword"
                                                style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Password</label>
-                                        <input type="password" class="form-control" th:field="*{password}"
-                                               id="exampleInputPassword" placeholder="Password">
+                                        <input type="password" class="form-control" name="password"
+                                               id="exampleInputPassword" placeholder="Password" required>
                                     </div>
                                     <label for="roles"
                                            style="display: flex; justify-content: center; align-items: center; font-weight: bold;">Role</label>
-                                    <select class="custom-select" multiple id="roles" th:field="*{roles}">
+                                    <select class="custom-select" multiple id="roles" name="roles" required>
                                         <option th:each="role : ${roles}" th:value="${role.getId()}"
                                                 th:text="${#strings.substring(role.getName(), 5)}"></option>
                                     </select>
                                     <br>
                                     <br>
                                     <div style="display: flex; justify-content: center;">
-                                        <button type="submit" class="btn btn-success">Add new user</button>
+                                        <button class="btn btn-success" type="button" id="addNewUserButton">Add new user</button>
                                     </div>
                                 </form>
                             </div>
