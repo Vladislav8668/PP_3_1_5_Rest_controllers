@@ -32,7 +32,7 @@ public class AdminController {
 
     @PostMapping("/users")
     public ResponseEntity<String> addNewUser(@RequestBody User user) {
-        // Проверка на уже существующего пользователя
+        // Проверка на уже существующего пользователя по username
         User existingUser = userService.findByUsername(user.getUsername());
         if (existingUser != null) {
             return new ResponseEntity<>("User with this username is already exists", HttpStatus.NOT_ACCEPTABLE);
@@ -43,7 +43,7 @@ public class AdminController {
 
     @PutMapping("/users/{id}")
     public ResponseEntity<String> updateUser(@PathVariable long id, @RequestBody User user) {
-        // Проверка на существование такого
+        // Проверка на существование такого (что не был удален другим админом пока редактировался)
         User existingUser = userService.getUser(id);
         if (existingUser == null) {
             return new ResponseEntity<>("This user does not exist", HttpStatus.NOT_FOUND);
