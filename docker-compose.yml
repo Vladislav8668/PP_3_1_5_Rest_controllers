@@ -1,0 +1,21 @@
+version: "1"
+services:
+  mysqldb:
+    container_name: dbContainer
+    image: mysql:latest
+    ports:
+      - 3307:3306
+    environment:
+      - MYSQL_DATABASE=myDBtestCompose
+      - MYSQL_ROOT_PASSWORD=root
+  myapp:
+    container_name: appContainer
+    image: 315pp:1.0
+    ports:
+      - 8080:8080
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/myDBtestCompose
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    depends_on:
+      - mysqldb
